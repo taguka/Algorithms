@@ -1,24 +1,63 @@
-def merge_sort_and_count(arr):
-    n=len(arr)
-    if n==1:
-        return 0,arr
-    mid=n//2
-    l_cn, left=merge_sort_and_count(arr[0:mid])
-    r_cn, right=merge_sort_and_count(arr[mid:n])
-    mas=list()
-    cn=0
-    while left and right:
-        if left[0]<right[0]:
-            mas.append(left.pop(0))
-        else:
-            mas.append(right.pop(0))
-            cn=cn+len(left)
-    mas.extend(right or left)
-    return cn+l_cn+r_cn, mas
-     
-if __name__=='__main__':  
-    f=open('C:\\Study\\Algorithms\\PA02\\IntegerArray.txt')
-    arr=list(map(int,f.read().splitlines()))
-    print(len(lst))
-    cn, arr=merge_sort_and_count(arr)    
-    print(cn)
+def partition_first(A, l, r):
+    p=arr[l]
+    i=l+1
+    for j in  range(l+1, r+1):
+        if A[j]<p:
+            k=A[j] 
+            A[j]=A[i]
+            A[i]=k
+            i=i+1       
+    k=A[i-1]
+    A[i-1]=p 
+    A[l]=k  
+    return i-1
+
+def partition_last(A, l, r):
+    A[l],A[r]=A[r], A[l]
+    p=arr[l]
+    i=l+1
+    for j in  range(l+1, r+1):
+        if A[j]<p:
+            k=A[j] 
+            A[j]=A[i]
+            A[i]=k
+            i=i+1       
+    k=A[i-1]
+    A[i-1]=p 
+    A[l]=k  
+    return i-1
+
+def partition_median(A, l, r):
+    mid=(r+l)//2
+    if A[l] < A[mid] < A[r] or A[r] < A[mid] < A[l]:
+        A[l], A[mid] = A[mid], A[l]
+    elif A[mid] < A[r] < A[l] or A[l] < A[r] < A[mid]:
+        A[l], A[r] = A[r], A[l]
+    p=arr[l]
+    i=l+1
+    for j in  range(l+1, r+1):
+        if A[j]<p:
+            k=A[j] 
+            A[j]=A[i]
+            A[i]=k
+            i=i+1       
+    k=A[i-1]
+    A[i-1]=p 
+    A[l]=k  
+    return i-1
+
+def quick_sort(arr,l,r):
+    if l>r:
+        return 0    
+    cn=len(arr[l:r])
+    div= partition_last(arr,l,r)
+    cn=cn+quick_sort(arr,l, div-1)
+    cn=cn+quick_sort(arr,div+1,r)  
+    return cn
+
+
+with open('C:\Algorithms_1\PA02\QuickSort.txt') as f:
+    arr = list(map(int, (line for line in f)))
+print (quick_sort(arr, 0, len(arr)-1))
+
+ 
